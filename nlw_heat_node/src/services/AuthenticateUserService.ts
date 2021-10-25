@@ -25,6 +25,14 @@ interface IUserResponse {
   name: string;
 }
 
+declare var process : {
+  env: {
+      GITHUB_CLIENT_ID: string,
+      GITHUB_CLIENT_SECRET: string,
+      JWT_SECRET: string
+  }
+}
+
 class AuthenticateUserService {
   async execute(code: string) {
     
@@ -85,14 +93,14 @@ class AuthenticateUserService {
           id: user.id,
         },
       },
-      env.JWT_SECRET,
+      process.env.JWT_SECRET,
       {
         subject: user.id,
         expiresIn: "1d",
       }
     );
 
-    return response.data;
+    return {token, user};
   }
 }
 
